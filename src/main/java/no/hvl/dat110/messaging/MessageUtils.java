@@ -15,16 +15,17 @@ public class MessageUtils {
 		
 		byte[] segment = null;
 		byte[] data;
-		
-		// TODO - START
-		
-		// encapulate/encode the payload data of the message and form a segment
-		// according to the segment format for the messaging layer
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-			
-		// TODO - END
+		byte payloadLength;
+
+		data = message.getData();
+		segment = new byte[SEGMENTSIZE];
+		payloadLength = (byte) data.length;
+
+		segment[0] = payloadLength;
+		for (int i=1; i<=data.length; i++) {
+			segment[i] = data[i-1];
+		}
+
 		return segment;
 		
 	}
@@ -32,14 +33,15 @@ public class MessageUtils {
 	public static Message decapsulate(byte[] segment) {
 
 		Message message = null;
-		
-		// TODO - START
-		// decapsulate segment and put received payload data into a message
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		byte[] payload;
+
+		payload = new byte[segment[0]];
+
+		for (int i=0; i<payload.length;i++) {
+			payload[i] = segment[i+1];
+		}
+
+		message = new Message(payload);
 		
 		return message;
 		
