@@ -6,8 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import no.hvl.dat110.TODO;
-
 
 public class MessageConnection {
 
@@ -36,9 +34,11 @@ public class MessageConnection {
 
 		byte[] data;
 
-		data = MessageUtils.encapsulate(message);
+//		data = MessageUtils.encapsulate(message);
 		try {
+			data = MessageUtils.encapsulate(message);
 			outStream.write(data);
+			outStream.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -51,13 +51,19 @@ public class MessageConnection {
 		byte[] data;
 
         try {
-            data = inStream.readAllBytes();
+            //data = inStream.readAllBytes();
+			byte[] segment = new byte[MessageUtils.SEGMENTSIZE];
+			int bytesRead = inStream.read(segment, 0, MessageUtils.SEGMENTSIZE);
+
+
+			if (bytesRead == MessageUtils.SEGMENTSIZE) {
+				message = MessageUtils.decapsulate(segment);
+			} else {
+				System.err.println("Incorrect segment size received. Expected: " + MessageUtils.SEGMENTSIZE + ", but read: " + bytesRead);
+			}
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-		message = MessageUtils.decapsulate(data);
-		
 		return message;
 		
 	}

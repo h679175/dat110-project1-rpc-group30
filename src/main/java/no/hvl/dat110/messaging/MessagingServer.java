@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import no.hvl.dat110.TODO;
-
 public class MessagingServer {
 
 	// server-side socket for accepting incoming TCP connections
@@ -29,13 +27,15 @@ public class MessagingServer {
 
 		MessageConnection connection = null;
 
-        try {
-            Socket client = welcomeSocket.accept();
+		try {
+			System.out.println("Server waiting for connection...");
+			Socket client = welcomeSocket.accept();
 			connection = new MessageConnection(client);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-		
+			System.out.println("Server connected to server");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 		return connection;
 
 	}
