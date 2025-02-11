@@ -1,23 +1,26 @@
 package no.hvl.dat110.rpc;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import no.hvl.dat110.TODO;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 
 public class RPCUtils {
 	
 	public static byte[] encapsulate(byte rpcid, byte[] payload) {
 		
 		byte[] rpcmsg = null;
-		
-		// TODO - START
-		
-		// Encapsulate the rpcid and payload in a byte array according to the RPC message syntax / format
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+
+		rpcmsg = new byte[128];
+
+		rpcmsg[0] = rpcid;
+		byte rpcmsgLength = (byte) payload.length;
+
+		for(int i = 1; i <= rpcmsgLength; i++) {
+			rpcmsg[i] = payload[i-1];
+		}
+
+
 		
 		return rpcmsg;
 	}
@@ -25,15 +28,14 @@ public class RPCUtils {
 	public static byte[] decapsulate(byte[] rpcmsg) {
 		
 		byte[] payload = null;
-		
-		// TODO - START
-		
-		// Decapsulate the rpcid and payload in a byte array according to the RPC message syntax
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+
+		int payloadLength = rpcmsg.length - 1;
+		payload = new byte[payloadLength];
+
+		for(int i = 0; i<payloadLength; i++){
+			payload[i] = rpcmsg[i+1];
+		}
+
 		
 		return payload;
 		
@@ -43,29 +45,27 @@ public class RPCUtils {
 	public static byte[] marshallString(String str) {
 		
 		byte[] encoded = null;
-		
-		// TODO - START 
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
-		
+
+        try {
+            encoded = str.getBytes("UTF-16");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
 		return encoded;
 	}
 
 	// convert byte array to a String
 	public static String unmarshallString(byte[] data) {
 		
-		String decoded = null; 
-		
-		// TODO - START 
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
-		
+		String decoded = null;
+
+        try {
+            decoded = new String(data, "UTF-16");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
 		return decoded;
 	}
 	
@@ -119,13 +119,8 @@ public class RPCUtils {
 	public static byte[] marshallInteger(int x) {
 		
 		byte[] encoded = null;
-		
-		// TODO - START 
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+
+		encoded = ByteBuffer.allocate(4).putInt(x).array();
 		
 		return encoded;
 	}
@@ -134,13 +129,8 @@ public class RPCUtils {
 	public static int unmarshallInteger(byte[] data) {
 		
 		int decoded = 0;
-		
-		// TODO - START 
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+
+		decoded = ByteBuffer.wrap(data).getInt();
 		
 		return decoded;
 		
