@@ -38,7 +38,7 @@ public class MessageConnection {
 		try {
 			data = MessageUtils.encapsulate(message);
 			outStream.write(data);
-			outStream.flush();
+			//outStream.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

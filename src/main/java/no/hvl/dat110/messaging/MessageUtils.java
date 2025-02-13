@@ -1,9 +1,5 @@
 package no.hvl.dat110.messaging;
 
-import java.util.Arrays;
-
-import no.hvl.dat110.TODO;
-
 public class MessageUtils {
 
 	public static final int SEGMENTSIZE = 128;
@@ -18,6 +14,7 @@ public class MessageUtils {
 		byte payloadLength;
 
 		data = message.getData();
+
 		segment = new byte[SEGMENTSIZE];
 		payloadLength = (byte) data.length;
 
