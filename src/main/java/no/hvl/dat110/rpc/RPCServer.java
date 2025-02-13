@@ -40,63 +40,21 @@ public class RPCServer {
 		   byte rpcid = 0;
 		   Message requestmsg, replymsg;
 
-		   /*
-   byte rpcid = 0;
-   Message requestmsg, replymsg;
 
-    replymsg = connection.receive();
+			replymsg = connection.receive();
+			byte[] params = replymsg.getData();
 
-    byte[] params = replymsg.getData();
-    rpcid = params[0];
-    RPCRemoteImpl method = services.get(rpcid);
-    params = RPCUtils.decapsulate(params);
-    byte[] returnVal = method.invoke(params);
-    byte[] replymsgData = RPCUtils.encapsulate(rpcid, returnVal);
-    replymsg = new Message(replymsgData);
-    connection.send(replymsg);
+			rpcid = params[0];
 
+			RPCRemoteImpl method = services.get(rpcid);
+			params = RPCUtils.decapsulate(params);
 
- */
-			try {
-				// Receive a message containing an RPC request
-				replymsg = connection.receive();
-				if (replymsg == null) {
-					throw new RuntimeException("Failed to receive reply message");
-				}
+			byte[] returnVal = method.invoke(params);
+			byte[] replymsgData = RPCUtils.encapsulate(rpcid, returnVal);
 
-				// Extract the parameters from the received message
-				byte[] params = replymsg.getData();
-				if (params == null || params.length == 0) {
-					throw new IllegalArgumentException("Invalid parameters in the RPC request");
-				}
+			replymsg = new Message(replymsgData);
+			connection.send(replymsg);
 
-
-				// Extract the RPC identifier
-				rpcid = params[0];
-
-				// Lookup the method to be invoked
-				RPCRemoteImpl method = services.get(rpcid);
-				if (method == null) {
-					throw new IllegalArgumentException("No method found for rpcid: " + rpcid);
-				}
-
-				// Extract the method's parameter using RPCUtils.decapsulate
-				params = RPCUtils.decapsulate(params);
-
-				// Invoke the method with the extracted parameters
-				byte[] returnVal = method.invoke(params);
-
-				// Encapsulate return value using RPCUtils.encapsulate
-				byte[] replymsgData = RPCUtils.encapsulate(rpcid, returnVal);
-
-				// Create a new message with the encapsulated return value and send it back
-				replymsg = new Message(replymsgData);
-				connection.send(replymsg);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				// Handle exceptions and possibly send an error reply message
-			}
 
 		   // - receive a Message containing an RPC request
 		   // - extract the identifier for the RPC method to be invoked from the RPC request

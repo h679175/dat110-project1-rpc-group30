@@ -50,6 +50,7 @@ public class RPCClient {
 			Message replyMessage;
 			replyMessage = connection.receive();
 			returnval = replyMessage.getData();
+			returnval = RPCUtils.decapsulate(returnval);
 
 		} catch (Exception e) {
 			e.printStackTrace();

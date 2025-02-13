@@ -43,13 +43,7 @@ public class RPCUtils {
 	public static String unmarshallString(byte[] data) {
 
 		String decoded = null;
-/*
-		for(int i = 1; i <= data.length; i++){
-			decoded += data[i+1];
-		}
 
-
- */
 		decoded = new String(data, StandardCharsets.UTF_8);
 		System.out.println(decoded);
 		return decoded;
