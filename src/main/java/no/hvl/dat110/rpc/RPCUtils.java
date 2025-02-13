@@ -45,7 +45,7 @@ public class RPCUtils {
 		String decoded = null;
 
 		decoded = new String(data, StandardCharsets.UTF_8);
-		System.out.println(decoded);
+
 		return decoded;
 
 	}

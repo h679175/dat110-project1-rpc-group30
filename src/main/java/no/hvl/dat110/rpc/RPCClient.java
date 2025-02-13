@@ -42,13 +42,14 @@ public class RPCClient {
 			byte[] rpcRequestMessage = RPCUtils.encapsulate(rpcid, param);
 
 
-			System.out.println("rpcReqMsg " + rpcRequestMessage);
 
 			Message message = new Message(rpcRequestMessage);
-			System.out.println(message.getData() +" data");
+
 			connection.send(message);
 			Message replyMessage;
+
 			replyMessage = connection.receive();
+
 			returnval = replyMessage.getData();
 			returnval = RPCUtils.decapsulate(returnval);
 
